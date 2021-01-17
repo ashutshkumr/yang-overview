@@ -1,0 +1,63 @@
+module ex {
+    yang-version 1.1;
+    namespace "https://localhost/ex";
+    prefix ex;
+    organization "NA";
+    contact "support@NA.com";
+    description "Example";
+
+    revision "2021-01-17" {
+        description "Initial revision";
+        reference "This";
+    }
+
+    typedef dotted-quad {
+        type string {
+            pattern '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+';
+        }
+        description "Four octets";
+    }
+
+    container interfaces {
+        list interface {
+            key "name";
+            leaf name {
+                type string;
+                mandatory "true";
+                description "Interface name";
+            }
+            leaf address {
+                type dotted-quad;
+                mandatory "true";
+                description "IP address";
+            }
+            leaf subnet-mask {
+                type dotted-quad;
+                mandatory "true";
+                description "Subnet mask";
+            }
+            leaf enabled {
+                type boolean;
+                default "false";
+                description "Enabled or disabled";
+            }
+        }
+
+        list interface-state {
+            config false;
+            key "name";
+            leaf name {
+                type string;
+                description "Interface name";
+            }
+            leaf link-status {
+                type enumeration {
+                    enum up;
+                    enum down;
+                }
+                mandatory "true";
+                description "Link is up or down";
+            }
+        }
+    }
+}
